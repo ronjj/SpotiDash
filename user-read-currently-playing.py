@@ -4,8 +4,11 @@ import os
 import json
 
 
-#Helper Functions to get information on the currently playing song
+#Prints Out Whole Response In A Nice Way
+#print(json.dumps(current, sort_keys=False, indent = 4))
 
+
+#Helper Functions to get information on the currently playing song
 
 SPOTIPY_CLIENT_ID = 'e28a6e30300349439d3a8383b8304ac2'
 SPOTIPY_CLIENT_SECRET = 'd0ef0a7539dd4202bda55ed6b4f81497'
@@ -16,8 +19,6 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope,client_id=SPOTIPY_CLI
 
 current = sp.currently_playing()
 
-#Prints Out Whole Response In A Nice Way
-#print(json.dumps(current, sort_keys=False, indent = 4))
 
 def is_playing():
     """Returns True if song is playing, False if a song is not currently playing"""
@@ -31,15 +32,23 @@ def get_currently_playing():
     artist_name = current['item']['album']['artists'][0]['name']
     song_title = current['item']['name']
 
-    result = f'{song_title} by {artist_name} is playing'
-    print(result)
+    if artist_name == None:
+        result = 'No song is playing'
+        print(result)
+    else:
+        result = f'{song_title} by {artist_name} is playing'
+        print(result)
+    
     return result
 
 def get_currently_playing_uri():
     link = current['item']['external_urls']['spotify']
 
-    print(link)
-    return link
+    if link == None:
+        print("nothing is playing")
+    else:
+        print(link)
+        return link
 
 get_currently_playing()
 is_playing()
